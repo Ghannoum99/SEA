@@ -6,11 +6,11 @@
 //fonction permettant de décomposer (parser) l'entrée de l'utilisateur en tokens
 void entry_parser(char str[])
 {
-    char * str_token = strtok(str, " ");
+    char * str_token = strtok(str, "");
 
     while( str_token != NULL)
     {
-        printf("%s\n", str_token);
+        printf("%s", str_token);
         //on demande le token suivant
         str_token = strtok(NULL, " ");
     }
@@ -28,8 +28,12 @@ int main(int argc, char* argv[])
     {
         fgets(str, (int) SIZE, stdin);
 
-        if (!strcmp(str, "exit\n"))
+        if ((!strcmp(str, "exit\n")) || (fgetc(stdin) == EOF))
+        {
+            printf("\n");
 			var_test = 0;
+        }
+            
 		else
         {
             entry_parser(str);
