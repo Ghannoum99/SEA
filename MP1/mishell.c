@@ -6,13 +6,13 @@
 //fonction permettant de décomposer (parser) l'entrée de l'utilisateur en tokens
 void entry_parser(char str[])
 {
-    char * str_token = strtok(str, " ");
+    char * str_token = strtok(str, " \t");
 
     while( str_token != NULL)
     {
-        printf("%s", str_token);
+        printf("%s\n", str_token);
         //on demande le token suivant
-        str_token = strtok(NULL, " ");
+        str_token = strtok(NULL, " \t");
     }
 }
 
@@ -22,23 +22,25 @@ int main(int argc, char* argv[])
 	char str[SIZE];
 	//variable de test
 	bool var_test = 1;
-	
-	do
-	{
-		printf("%%");
-		
-		scanf("%s",str);
-		
 
-		// tester si l'utilisateur a entré "exit" ou CTRL + D
-		if ((!strcmp(str, "exit")) || fgetc(stdin) == EOF)
+	printf("%%");
+	while(var_test)
+    {
+        fgets(str, (int) SIZE, stdin);
+        str[strlen(str)-1]='\0';
+
+        if ((!strcmp(str, "exit")) || feof(stdin)) 
+        {
 			var_test = 0;
+        }
+            
 		else
-			entry_parser(str);
-		
-		
-	}while(var_test);
-	
+        {
+            entry_parser(str);
+            printf("%%");
+        }
+			 
+    }
 	
 	return 0;
 }
