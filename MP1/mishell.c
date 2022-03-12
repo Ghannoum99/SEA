@@ -1,44 +1,41 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#define SIZE 100
+#include <stdlib.h>
+#include <unistd.h>
+#define SIZE 1000
 
 //fonction permettant de décomposer (parser) l'entrée de l'utilisateur en tokens
-void entry_parser(char str[])
+void entry_parser(char cmd[])
 {
-    char * str_token = strtok(str, " \t");
+    char * tokens = strtok(cmd, " \t\n");
 
-    while( str_token != NULL)
+    while( tokens != NULL)
     {
-        printf("%s\n", str_token);
+        //on teste si l'utilisateur a entré la chaine "exit"
+        if (!strcmp(tokens, "exit"))
+            exit(0);
+        
+        else
+            printf("%s\n", tokens);
+        
         //on demande le token suivant
-        str_token = strtok(NULL, " \t");
+        tokens = strtok(NULL, " \t\n");
     }
 }
 
-
 int main(int argc, char* argv[])
 {
-	char str[SIZE];
-	//variable de test
-	bool var_test = 1;
+	char cmd[SIZE];
+    char cwd[SIZE];
 
-	printf("%%");
-	while(var_test)
+	while(!feof(stdin))
     {
-        fgets(str, (int) SIZE, stdin);
-        str[strlen(str)-1]='\0';
+        printf("%s %%", getcwd(cwd, sizeof(cwd)));
+        fgets(cmd, sizeof(cmd), stdin);
+        cmd[strlen(cmd)-1]='\0';
 
-        if ((!strcmp(str, "exit")) || feof(stdin)) 
-        {
-			var_test = 0;
-        }
-            
-		else
-        {
-            entry_parser(str);
-            printf("%%");
-        }
+        entry_parser(cmd);
 			 
     }
 	
